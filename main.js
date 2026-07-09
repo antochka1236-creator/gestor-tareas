@@ -1,3 +1,6 @@
+// Importar prompt-sync para Node.js
+const prompt = require('prompt-sync')();
+
 const tasques = [];
 const completades = [];
 
@@ -6,16 +9,17 @@ const completades = [];
  * @returns {number} La opción seleccionada por el usuario
  */
 function mostrarMenu(){
-    return Number(prompt(`
-        1. Afegir tasca
-        2. Mostrar tasques
-        3. Marcar completada
-        4. Eliminar tasca
-        5. Estadístiques
-        6. Mostrar tasques pendents
-        7. Sortir
-    `));
-}
+    console.log('\n=== Menu de Opciones ===')
+    console.log('1. Afegir tasca')
+    console.log('2. Mostrar tasques')
+    console.log('3. Marcar completada')
+    console.log('4. Eliminar tasca')
+    console.log('5. Estadístiques')
+    console.log('6. Mostrar tasques pendents')
+    console.log('7. Sortir')
+    
+    return Number(prompt('Elija una opcion'));
+} 
 /**
  * Añadirá una nueva tarea al listado
  * @returns {string} Mensaje de confirmación o error

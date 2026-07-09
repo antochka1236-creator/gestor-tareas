@@ -1,0 +1,25 @@
+{
+  "name": "gestor-tareas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antochka1236-creator/gestor-tareas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/antochka1236-creator/gestor-tareas/issues"
+  },
+  "homepage": "https://github.com/antochka1236-creator/gestor-tareas#readme",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
