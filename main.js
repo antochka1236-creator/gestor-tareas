@@ -1,8 +1,8 @@
 // Importar prompt-sync para Node.js
 const prompt = require('prompt-sync')();
 
-const tasques = [];
-const completades = [];
+// Estructura de dades {nom: string, completada: boolean}
+const tasques = []
 
 /**
  * Mostrará el menú principal con las opciones disponibles
@@ -24,19 +24,21 @@ function mostrarMenu(){
  * Añadirá una nueva tarea al listado
  * @returns {string} Mensaje de confirmación o error
  */function afegirTasca(){
-    let novaTasca = prompt('Nova Tasca: ')?.trim() ?? '';
+    let novaTascaNom = prompt('Nova Tasca: ')?.trim() ?? '';
 
-    if (novaTasca === '') return 'La tasca no pot estar buida';
+    if (novaTascaNom === '') return 'La tasca no pot estar buida';
 
     let duplicada = tasques.find(
-        tasca => tasca.toLowerCase() === novaTasca.toLowerCase()
+        tasca => tasca.nom.toLowerCase() === novaTascaNom.toLowerCase()
     );
 
     if (duplicada) return 'Aquesta tasca ja existeix';
 
-    tasques.push(novaTasca);
-    completades.push(false);
-
+    const novaTasqa = {
+        nom: novaTascaNom,
+        completada: false
+    }
+    tasques.push(novaTasqa)
     return 'Tasca afegida correctament';
 }
 
@@ -46,20 +48,12 @@ function mostrarMenu(){
  */
 function mostrarTasques(){
     if (tasques.length === 0) return 'No hi ha tasques';
+    
+    const llistatTasques = tasques
+    .map((tasqa, index) => `${index + 1}. ${tasqa.nom} - ${tasqa.completada ? 'Completada' : 'Pendent'}`)
+    .join(`\n`)
 
-    let llistatTasques = '==== Llistat de tasques ====\n';
-
-    tasques.forEach((tasca, index) =>{
-        let estat = completades[index]
-            ? 'Completada'
-            : 'Pendent';
-
-        let itemLlistat = `${index + 1}. ${tasca} - ${estat}`;
-
-        llistatTasques += itemLlistat + '\n';
-    });
-
-    return llistatTasques;
+    return `=== Listat de tasques ===\n${llistatTasques}`;
 }
 
 /**
@@ -70,13 +64,13 @@ function mostrarTasquesPendents(){
     if (tasques.length === 0) return 'No hi ha tasques';
 
     const llistatPendents = tasques
-        .filter((_, index) => !completades[index])
-        .map((tasca, index) => `${index + 1}. ${tasca} - Pendent`)
-        .join('\n');
+       .filter(tasca => !tasca.completada)
+       .map((tasca, index) => `${index + 1}. ${tasca.nom}`)
+       .join(`\n`)
 
-    return llistatPendents 
-        ? `==== Tasques Pendents ====\n${llistatPendents}`
-        : 'No hi ha tasques pendents';
+    if (!llistatPendents) return 'No hi ha tasques pendents'
+
+    return `=== Tasques pemdents ===\n${llistatPendents}`
 }
 
 /**
@@ -107,17 +101,16 @@ function modificarTasca(index, accio){
     if (index === -1) return 'Tasca no vàlida';
 
     if (accio === 'completar'){
-        if (completades[index]) {
+        if (tasques[index].completada) {
             return 'La tasca ja estava completada!';
         }
 
-        completades[index] = true;
+        tasques[index].completada = true;
         return 'Tasca completada!!';
     }
 
     if (accio === 'esborrar'){
         tasques.splice(index, 1);
-        completades.splice(index, 1);
         return 'Tasca eliminada!!';
     }
 }
@@ -131,7 +124,7 @@ function mostrarEstadistiques(){
 
     let total = tasques.length;
 
-    let fetes = completades.filter(estat => estat).length;
+    let fetes = tasques.filter(tasqa => tasqa.completada).length;
 
     let pendents = total - fetes;
 
